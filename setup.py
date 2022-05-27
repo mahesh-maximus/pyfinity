@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Mahesh Maximus",
     author_email="",
-    description="A small example package",
+    description="A tool that makes the python interpreter seamlessly run forever.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mahesh-maximus/pyfinity",
