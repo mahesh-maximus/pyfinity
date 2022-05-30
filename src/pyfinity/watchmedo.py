@@ -49,7 +49,7 @@ def runPython3Interpreter():
 def colorPrint(style, fg, bg, msg):
     print('\x1b[{};{};{}m'.format(style, fg, bg) + msg + '\x1b[0m') 
 
-def run():
+def main():
     startVulcan()
     event_handler = Handler()
     observer = watchdog.observers.Observer()
@@ -62,4 +62,5 @@ def run():
         observer.stop()
     observer.join()
 
-run()
+if __name__ == '__main__':
+    sys.exit(main())

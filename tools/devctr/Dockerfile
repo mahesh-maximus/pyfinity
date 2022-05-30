@@ -10,6 +10,7 @@ RUN apt-get update \
         binutils-dev \
         git \
         curl \
+        tar \
         python \
         python3 \
         python3-dev \
