@@ -1,3 +1,5 @@
+import os
+from os import path
 import sys
 import watchdog.events
 import watchdog.observers
@@ -36,9 +38,9 @@ def runPython3Interpreter():
     mutex.acquire()
     try:
         colorPrint('1','31', '44', "Starting Valcan python3 interpreter ...")
-        print(sys.argv[2])
         PyFinity.process = subprocess.Popen(["python3", sys.argv[2]])
-        PyFinity.process.wait()
+        exitCode = PyFinity.process.wait()
+        print(exitCode)
         colorPrint('1','31', '44', "Stopped Valcan! python3 interpreter ...")
     finally:
         mutex.release()
@@ -50,6 +52,18 @@ def colorPrint(style, fg, bg, msg):
     print('\x1b[{};{};{}m'.format(style, fg, bg) + msg + '\x1b[0m') 
 
 def main():
+    if(len(sys.argv) != 3):
+        print("Exactly 2 parameters should be provided, Watch directory and Entry point python file.")
+        return
+
+    if(os.path.isdir(sys.argv[1]) == False):
+        print("Parameter 1 should be a directory.")
+        return
+    
+    if(path.exists(sys.argv[2]) == False):
+        print("Parameter 2 should be a python file.")
+        return
+
     startVulcan()
     event_handler = Handler()
     observer = watchdog.observers.Observer()
