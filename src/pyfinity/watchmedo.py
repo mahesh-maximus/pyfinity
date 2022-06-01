@@ -6,6 +6,7 @@ import watchdog.observers
 import time
 import subprocess
 from threading import Thread, Lock
+import random
 
 mutex = Lock()
 
@@ -21,27 +22,30 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
     # def on_created(self, event):
     
     # def on_modified(self, event):
+       
     
     def on_any_event(self, event):
-        colorPrint('1','31', '44', "Watchdog received an file system event - % s." % event.src_path)
-        PyFinity.process.kill()
-        startVulcan()
+        #colorPrint('1','31', '44', "Watchdog received an file system event - % s." % event.src_path)
+        try:
+            PyFinity.process.kill()
+        # except:
+            # print("PyFinity.process.kill() error")
+        finally:
+            startVulcan()
 
 def startVulcan():
     Thread(target=runPython3Interpreter).start()
 
 def runPython3Interpreter():
     if mutex.locked():
-        colorPrint('1','31', '44', "In progress of spawning a new Python3 interpreter instance ...")
         return None
 
     mutex.acquire()
+    time.sleep(1)
     try:
-        colorPrint('1','31', '44', "Starting Valcan python3 interpreter ...")
+        colorPrint('1','31', '44', "New file system change ...")
         PyFinity.process = subprocess.Popen(["python3", sys.argv[2]])
-        exitCode = PyFinity.process.wait()
-        print(exitCode)
-        colorPrint('1','31', '44', "Stopped Valcan! python3 interpreter ...")
+        PyFinity.process.wait()
     finally:
         mutex.release()
 
@@ -74,6 +78,8 @@ def main():
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
+        print('stop')
+    print('join')
     observer.join()
 
 if __name__ == '__main__':
